@@ -1,0 +1,13 @@
+---
+- name: Install firewalld
+  ansible.builtin.dnf:
+    name: firewalld
+    state: present
+
+- name: Enable and start firewalld
+  ansible.builtin.systemd_service:
+    name: firewalld.service
+    enabled: true
+    state: started
+  ignore_errors: '{{ ansible_check_mode }}'
+...

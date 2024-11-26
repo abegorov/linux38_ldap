@@ -1,0 +1,10 @@
+---
+ipa_client_principal: admin
+ipa_client_password: '{{ lookup("ansible.builtin.password",
+  "passwords/admin_password.txt", length=26) }}'
+ipa_client_ips: []
+ipa_client_domain: '{{ undef() }}'
+ipa_client_server: '{{ undef() }}'
+ipa_client_realm: '{{ ipa_client_domain | upper }}'
+ipa_client_hostname: '{{ inventory_hostname_short }}.{{ ipa_client_domain }}'
+...

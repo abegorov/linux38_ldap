@@ -1,0 +1,34 @@
+---
+- name: Install IPA Server
+  ansible.builtin.dnf:
+    name: ipa-server
+    state: present
+
+- name: Enable freeipa service in firewalld
+  ansible.posix.firewalld:
+    service: freeipa-4
+    state: enabled
+    permanent: true
+    immediate: true
+    offline: true
+
+- name: Update hostname
+  ansible.builtin.hostname:
+    name: '{{ ipa_server_hostname }}'
+
+- name: Execute ipa-server-install command
+  ansible.builtin.command:
+    cmd: >-
+      ipa-server-install
+      --unattended
+      --ds-password='{{ ipa_server_ds_password }}'
+      --admin-password='{{ ipa_server_admin_password }}'
+      {% for ip in ipa_server_ips %}
+      --ip-address='{{ ip }}'
+      {% endfor %}
+      --domain='{{ ipa_server_domain }}'
+      --realm='{{ ipa_server_realm }}'
+      --hostname='{{ ipa_server_hostname }}'
+    creates: /etc/ipa/default.conf
+  no_log: true
+...

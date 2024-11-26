@@ -1,0 +1,14 @@
+---
+domain: otus.lan
+timezone_name: Europe/Moscow
+
+ipa_ds_password: '{{ lookup("ansible.builtin.password",
+  "passwords/ds_password.txt", length=26) }}'
+ipa_admin_password: '{{ lookup("ansible.builtin.password",
+    "passwords/admin_password.txt", length=26) }}'
+
+ipa_client_password: '{{ ipa_admin_password }}'
+ipa_client_ips: ['{{ ip }}']
+ipa_client_domain: '{{ domain }}'
+ipa_client_server: '{{ hostvars["ipa"].ipa_server_hostname }}'
+...

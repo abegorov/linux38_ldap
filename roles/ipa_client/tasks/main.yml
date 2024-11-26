@@ -1,0 +1,25 @@
+---
+- name: Install IPA Client
+  ansible.builtin.dnf:
+    name: ipa-client
+    state: present
+
+- name: Execute ipa-client-install command
+  ansible.builtin.command:
+    cmd: >-
+      ipa-client-install
+      --unattended
+      --principal='{{ ipa_client_principal }}'
+      --password='{{ ipa_client_password }}'
+      {% for ip in ipa_client_ips %}
+      --ip-address='{{ ip }}'
+      {% endfor %}
+      --domain='{{ ipa_client_domain }}'
+      --server='{{ ipa_client_server }}'
+      --realm='{{ ipa_client_realm }}'
+      --hostname='{{ ipa_client_hostname }}'
+      --mkhomedir
+      --no-ntp
+    creates: /etc/ipa/default.conf
+  no_log: true
+...

@@ -1,0 +1,20 @@
+---
+ip: '192.168.56.10'
+
+ipa_server_ds_password: '{{ ipa_ds_password }}'
+ipa_server_admin_password: '{{ ipa_admin_password}}'
+ipa_server_ips: ['{{ ip }}']
+ipa_server_domain: '{{ domain }}'
+ipa_server_hostname: '{{ inventory_hostname_short }}.{{ ipa_server_domain }}'
+
+ipa_users_host: '{{ ipa_server_hostname }}'
+ipa_users_user: admin
+ipa_users_pass: '{{ ipa_admin_password }}'
+ipa_users_domain: '{{ domain }}'
+ipa_users_dict:
+  annie.hood: {givenname: Annie, sn: Hood}
+  angel.brooks: {givenname: Angel, sn: Brooks}
+  lance.kim: {givenname: Lance, sn: Kim}
+  ruth.hilton: {givenname: Ruth, sn: Hilton}
+  ella.stephens: {givenname: Ella, sn: Stephens}
+...

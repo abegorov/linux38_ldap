@@ -1,0 +1,25 @@
+---
+- name: Common provision
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - hosts
+    - timezone
+    - chrony
+    - firewalld
+
+- name: Server provision
+  hosts: ipa
+  become: true
+  gather_facts: false
+  roles:
+    - ipa_server
+    - ipa_users
+
+- name: Client provision
+  hosts: [client1, client2]
+  become: true
+  gather_facts: false
+  roles:
+    - ipa_client

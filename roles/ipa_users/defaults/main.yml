@@ -1,0 +1,22 @@
+---
+ipa_users_host: '{{ undef() }}'
+ipa_users_user: '{{ undef() }}'
+ipa_users_pass: '{{ undef() }}'
+ipa_users_domain: example.com
+
+ipa_users_displayname: '{{ user.props.givenname | default(user.name) }} {{
+    user.props.sn | default(user.name) }}'
+ipa_users_givenname: '{{ user.name }}'
+ipa_users_sn: '{{ user.name }}'
+ipa_users_mail: '{{ user.name }}@{{ ipa_users_domain }}'
+ipa_users_loginshell: /bin/bash
+ipa_users_homedirectory: /home/{{ user.name }}
+ipa_users_password: '{{ lookup("ansible.builtin.password",
+    "passwords/" + user.name + ".txt", length=26) }}'
+ipa_users_sshprivatekey_path: 'passwords/{{ user.name }}'
+ipa_users_sshpubkey:
+  - '{{ lookup("ansible.builtin.file", user.props.sshprivatekey_path |
+    default(ipa_users_sshprivatekey_path) + ".pub") }}'
+
+ipa_users_dict: {}
+...

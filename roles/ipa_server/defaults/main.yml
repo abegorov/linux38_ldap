@@ -1,0 +1,10 @@
+---
+ipa_server_ds_password: '{{ lookup("ansible.builtin.password",
+  "passwords/ds_password.txt", length=26) }}'
+ipa_server_admin_password: '{{ lookup("ansible.builtin.password",
+  "passwords/admin_password.txt", length=26) }}'
+ipa_server_ips: []
+ipa_server_domain: '{{ undef() }}'
+ipa_server_realm: '{{ ipa_server_domain | upper }}'
+ipa_server_hostname: '{{ inventory_hostname_short }}.{{ ipa_server_domain }}'
+...

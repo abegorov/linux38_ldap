@@ -1,0 +1,39 @@
+---
+- name: Generate OpenSSH keys
+  delegate_to: localhost
+  run_once: true
+  become: false
+  community.crypto.openssh_keypair:
+    path: '{{ user.props.sshprivatekey_path |
+      default(ipa_users_sshprivatekey_path) }}'
+    type: ed25519
+  loop: '{{ ipa_users_dict | ansible.builtin.dict2items(key_name="name",
+    value_name="props") }}'
+  loop_control:
+    label: '{{ user.name }}'
+    loop_var: user
+
+- name: Add LDAP user
+  community.general.ipa_user:
+    ipa_host: '{{ ipa_users_host }}'
+    ipa_user: '{{ ipa_users_user }}'
+    ipa_pass: '{{ ipa_users_pass }}'
+    name: '{{ user.name }}'
+    displayname: '{{ user.props.displayname |
+      default(ipa_users_displayname) }}'
+    givenname: '{{ user.props.givenname | default(ipa_users_givenname) }}'
+    sn: '{{ user.props.sn | default(ipa_users_sn) }}'
+    mail: '{{ user.props.mail | default(ipa_users_mail) }}'
+    loginshell: '{{ user.props.loginshell | default(ipa_users_loginshell) }}'
+    homedirectory: '{{ user.props.homedirectory |
+      default(ipa_users_homedirectory) }}'
+    password: '{{ user.props.password | default(ipa_users_password) }}'
+    sshpubkey: '{{ user.props.sshpubkey | default(ipa_users_sshpubkey) }}'
+    update_password: on_create
+    state: present
+  loop: '{{ ipa_users_dict | ansible.builtin.dict2items(key_name="name",
+    value_name="props") }}'
+  loop_control:
+    label: '{{ user.name }}'
+    loop_var: user
+...
